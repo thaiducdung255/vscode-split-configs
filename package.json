@@ -1,5 +1,9 @@
 {
 	"name": "split-configs",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/thaiducdung255/vscode-split-configs.git"
+	},
 	"displayName": "split configs",
 	"description": "split settings.json and keybindings.json to multiple files",
 	"version": "0.0.1",
