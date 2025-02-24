@@ -1,5 +1,3 @@
-import * as vscode from "vscode";
-
 const { writeFileSync, readdirSync } = require("node:fs");
 
 function getPartialConfig(
@@ -79,7 +77,7 @@ function gatherVsCodeConfig(opts: {
 	);
 }
 
-function formatPath(rawPath: string | undefined) {
+export function formatPath(rawPath: string | undefined) {
 	const { HOME } = process.env;
 
 	if (!rawPath) {
@@ -93,19 +91,13 @@ function formatPath(rawPath: string | undefined) {
 	return rawPath.replace(/^~/, HOME);
 }
 
-export function joinConfigs() {
-	const config = vscode.workspace.getConfiguration("split-configs");
-	const keybindingsPath = formatPath(config.get<string>("keybindingsPath"));
-	const settingsPath = formatPath(config.get<string>("settingsPath"));
-
-	const keybindingsPartialPath = formatPath(
-		config.get<string>("keybindingsPartialPath"),
-	);
-
-	const settingsPartialPath = formatPath(
-		config.get<string>("settingsPartialPath"),
-	);
-
+export function joinConfigs(input: {
+  keybindingsPath: string,
+  settingsPath: string,
+  keybindingsPartialPath: string,
+  settingsPartialPath: string
+}) {
+  const { keybindingsPath, keybindingsPartialPath, settingsPath, settingsPartialPath } = input
 	gatherVsCodeConfig({
 		configPath: keybindingsPath,
 		partialDir: keybindingsPartialPath,
