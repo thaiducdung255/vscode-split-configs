@@ -35,6 +35,14 @@
 					"type": "string",
 					"default": "~/.config/Code/User/partials/settings/",
 					"description": "Partial path for settings.json"
+				},
+				"split-configs.excludedFileNames": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": ["macos_remove.json"],
+					"description": "ignored file names"
 				}
 			}
 		},
@@ -56,21 +64,18 @@
 		"watch-tests": "tsc -p . -w --outDir out",
 		"pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
 		"check-types": "tsc --noEmit",
-		"lint": "eslint src",
+		"lint": "biome check src",
 		"test": "vscode-test"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.97.0",
 		"@types/mocha": "^10.0.10",
 		"@types/node": "20.x",
-		"@typescript-eslint/eslint-plugin": "^8.22.0",
-		"@typescript-eslint/parser": "^8.22.0",
-		"eslint": "^9.19.0",
+		"@types/vscode": "^1.97.0",
+		"@vscode/test-cli": "^0.0.10",
+		"@vscode/test-electron": "^2.4.1",
 		"esbuild": "^0.24.2",
 		"npm-run-all": "^4.1.5",
-		"typescript": "^5.7.3",
-		"@vscode/test-cli": "^0.0.10",
-		"@vscode/test-electron": "^2.4.1"
+		"typescript": "^5.7.3"
 	},
-	"packageManager": "pnpm@10.0.0-beta.2+sha512.d219a39dda2e29a05cc721cb9e31483a79c7b49ffafa8001a25f74ac8c0bb7eea2f2b3f415dc3b65a3a0443acff389f1058ec0efa84e7fdf420684b626004b2a"
+	"packageManager": "pnpm@10.5.2"
 }
