@@ -6,11 +6,7 @@ function getPartialConfig(
   fts = ['json'],
   excludedFilenames = ['package.json', 'package-lock.json'],
 ) {
-  process.stdout.write(
-    `Getting partial configs from: ${dir}, filetypes: ${fts.join(', ')}, excluded filenames: ${excludedFilenames.join(', ')}\n`,
-  )
-
-  let configs: KeyBinding[] | object = isArray ? [] : {}
+  const configs: KeyBinding[] | Record<string, any> = isArray ? [] : {}
 
   const filenames = readdirSync(dir).filter((filename: string) => {
     const ft = filename.split('.').slice(-1)[0]
@@ -22,12 +18,21 @@ function getPartialConfig(
   )
 
   for (const filename of filenames) {
+    process.stdout.write(`Processing file: ${filename}\n`)
     const partialConfigs = require(`${dir}/${filename}`)
 
     if (Array.isArray(configs)) {
       configs.push(...partialConfigs)
-    } else {
-      configs = { ...configs, ...partialConfigs }
+      continue
+    }
+
+    for (const key in partialConfigs) {
+      if (key in configs && Array.isArray(configs[key])) {
+        configs[key].push(...partialConfigs[key])
+        continue
+      }
+
+      configs[key] = partialConfigs[key]
     }
   }
 

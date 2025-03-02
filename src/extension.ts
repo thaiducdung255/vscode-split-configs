@@ -17,15 +17,15 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   vscode.window.showInformationMessage(
-    `setting partial path: ${settingsPartialPath}`,
+    `Setting partial path: ${settingsPartialPath}`,
   )
 
   vscode.window.showInformationMessage(
-    `key binding partial path: ${keybindingsPartialPath}`,
+    `Keybinding partial path: ${keybindingsPartialPath}`,
   )
 
   vscode.window.showInformationMessage(
-    `excluded file names: ${(excludedFilenames || []).join(', ')}`,
+    `Excluded file names: ${(excludedFilenames || []).join(', ')}`,
   )
 
   const disposable = vscode.commands.registerCommand(
