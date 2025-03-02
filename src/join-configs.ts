@@ -51,6 +51,7 @@ function removeDuplicatedConfigs(configs: KeyBinding[]) {
 			const { key: _key, command: _command, when: _when } = oldConfig;
 
 			if (key === _key && command === _command && when === _when) {
+				console.log("Dupplicated config:", command, when);
 				configs.splice(i, 1);
 				i--;
 				removeCount++;
@@ -66,9 +67,11 @@ function gatherVsCodeConfig(opts: {
 	configPath: string;
 	partialDir: string;
 	isArray?: boolean;
+	fts?: string[];
+	excludedFilenames?: string[];
 }) {
-	const { configPath, partialDir, isArray = true } = opts;
-	const configs = getPartialConfig(partialDir, isArray);
+	const { configPath, partialDir, isArray, fts, excludedFilenames } = opts;
+	const configs = getPartialConfig(partialDir, isArray, fts, excludedFilenames);
 	isArray && Array.isArray(configs) && removeDuplicatedConfigs(configs);
 	writeFileSync(configPath, JSON.stringify(configs, null, "\t"));
 
@@ -92,20 +95,29 @@ export function formatPath(rawPath: string | undefined) {
 }
 
 export function joinConfigs(input: {
-  keybindingsPath: string,
-  settingsPath: string,
-  keybindingsPartialPath: string,
-  settingsPartialPath: string
+	keybindingsPath: string;
+	settingsPath: string;
+	keybindingsPartialPath: string;
+	settingsPartialPath: string;
+	excludedFilenames?: string[];
 }) {
-  const { keybindingsPath, keybindingsPartialPath, settingsPath, settingsPartialPath } = input
+	const {
+		keybindingsPath,
+		keybindingsPartialPath,
+		settingsPath,
+		settingsPartialPath,
+		excludedFilenames,
+	} = input;
 	gatherVsCodeConfig({
 		configPath: keybindingsPath,
 		partialDir: keybindingsPartialPath,
+		excludedFilenames,
 	});
 
 	gatherVsCodeConfig({
 		configPath: settingsPath,
 		partialDir: settingsPartialPath,
 		isArray: false,
+		excludedFilenames,
 	});
 }
